@@ -1,0 +1,34 @@
+# Node.js 相关
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# TypeScript 编译输出
+dist/
+*.tsbuildinfo
+
+# IDE 和编辑器
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 测试覆盖率报告
+coverage/
+
+# 本地数据文件
+.todo-data.json
+.todo-data.json.tmp
+
+# 日志文件
+*.log
+logs/ 
