@@ -190,6 +190,22 @@ async function main() {
         }
         break;
 
+      case 'complete-all':
+        try {
+          const completedTodos = todoService.completeAll();
+          console.log('已完成所有待办事项：\n');
+          completedTodos.forEach(todo => {
+            console.log(`编号: ${todo.id}`);
+            console.log(`内容: '${todo.content}'`);
+            console.log(`完成时间: ${formatDate(todo.completedAt!)}`);
+            console.log(`状态: 已完成\n`);
+          });
+          console.log(`共完成 ${completedTodos.length} 个待办事项`);
+        } catch (error: any) {
+          console.log(error.message);
+        }
+        break;
+
       default:
         console.error('未知的命令');
         process.exit(1);

@@ -597,4 +597,54 @@ describe('TodoService', () => {
       expect(completedTodos[0].completedAt).toBeInstanceOf(Date);
     });
   });
+
+  describe('completeAll', () => {
+    it('应该成功完成所有未完成的待办事项', () => {
+      // 准备测试数据
+      const todos = [
+        todoService.add({ content: '完成用户故事编写', deadline: new Date('2025-12-31') }),
+        todoService.add({ content: '实现功能代码', deadline: new Date('2025-06-30') }),
+        todoService.add({ content: '编写测试用例' })
+      ];
+      
+      // 将第二个待办事项标记为完成
+      todoService.complete(todos[1].id);
+      
+      // 执行 completeAll
+      const completedTodos = todoService.completeAll();
+      
+      // 验证结果
+      expect(completedTodos).to.have.lengthOf(2);
+      expect(completedTodos.map(t => t.content)).to.deep.equal([
+        '完成用户故事编写',
+        '编写测试用例'
+      ]);
+      expect(completedTodos.every(t => t.completed)).to.be.true;
+      expect(completedTodos.every(t => t.completedAt instanceof Date)).to.be.true;
+      
+      // 验证所有待办事项使用相同的完成时间
+      const firstCompletedAt = completedTodos[0].completedAt!.getTime();
+      expect(completedTodos.every(t => t.completedAt!.getTime() === firstCompletedAt)).to.be.true;
+    });
+
+    it('当所有待办事项都已完成时应该抛出错误', () => {
+      // 准备测试数据
+      const todos = [
+        todoService.add({ content: '完成用户故事编写' }),
+        todoService.add({ content: '实现功能代码' })
+      ];
+      
+      // 将所有待办事项标记为完成
+      todos.forEach(todo => todoService.complete(todo.id));
+      
+      // 验证抛出错误
+      expect(() => todoService.completeAll())
+        .to.throw('当前没有未完成的待办事项');
+    });
+
+    it('当没有待办事项时应该抛出错误', () => {
+      expect(() => todoService.completeAll())
+        .to.throw('当前没有待办事项');
+    });
+  });
 }); 

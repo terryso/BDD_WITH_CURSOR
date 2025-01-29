@@ -41,6 +41,7 @@ interface ITodoService {
   list(options?: ListOptions): Todo[];
   reset(id: number): Todo;
   completeBatch(ids: number[]): Todo[];
+  completeAll(): Todo[];
 }
 
 export class TodoService implements ITodoService {
@@ -331,6 +332,31 @@ export class TodoService implements ITodoService {
     const completedTodos = validTodos.map(todo => {
       todo.completed = true;
       todo.completedAt = new Date();
+      return todo;
+    });
+
+    this.saveToFile();
+    return completedTodos;
+  }
+
+  completeAll(): Todo[] {
+    // 获取所有未完成的待办事项
+    const uncompletedTodos = this.todos.filter(t => !t.completed);
+    
+    if (uncompletedTodos.length === 0) {
+      if (this.todos.length === 0) {
+        throw new Error('当前没有待办事项');
+      }
+      throw new Error('当前没有未完成的待办事项');
+    }
+
+    // 设置完成时间（所有待办事项使用相同的完成时间）
+    const completedAt = new Date();
+
+    // 批量完成所有未完成的待办事项
+    const completedTodos = uncompletedTodos.map(todo => {
+      todo.completed = true;
+      todo.completedAt = completedAt;
       return todo;
     });
 
