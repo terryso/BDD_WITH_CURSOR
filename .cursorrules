@@ -30,4 +30,4 @@
 
 ## shell 相关
 - 确保退出base环境
-- 使用 /usr/local/bin/zsh -i -c 'source ~/.zshrc && export PATH="/Users/nick/.nvm/versions/node/v18.20.6/bin:$PATH" && node --version && npm test' 命令来运行测试
+- 使用 export PATH="/Users/nick/.nvm/versions/node/v18.20.6/bin:$PATH" && node --version && npm test 命令来运行测试

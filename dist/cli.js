@@ -41,7 +41,7 @@ async function main() {
     const [action, ...args] = process.argv.slice(2);
     try {
         switch (action) {
-            case 'add':
+            case 'add': {
                 let content = args[0];
                 let deadline;
                 // 解析参数
@@ -76,7 +76,8 @@ async function main() {
                 }
                 console.log(`状态: ${todo.completed ? '已完成' : '未完成'}`);
                 break;
-            case 'complete':
+            }
+            case 'complete': {
                 if (!args[0]) {
                     throw new Error('请提供待办事项ID');
                 }
@@ -91,7 +92,8 @@ async function main() {
                 console.log(`完成时间: ${(0, dateFormatter_1.formatDate)(completedTodo.completedAt)}`);
                 console.log(`状态: 已完成`);
                 break;
-            case 'delete':
+            }
+            case 'delete': {
                 if (!args[0]) {
                     throw new Error('请提供待办事项ID');
                 }
@@ -104,7 +106,8 @@ async function main() {
                 console.log(`编号: ${deletedTodo.id}`);
                 console.log(`内容: '${deletedTodo.content}'`);
                 break;
-            case 'reset':
+            }
+            case 'reset': {
                 if (!args[0]) {
                     throw new Error('请提供待办事项ID');
                 }
@@ -121,17 +124,18 @@ async function main() {
                 console.log(`原完成时间: ${(0, dateFormatter_1.formatDate)(originalCompletedAt)}`);
                 console.log(`当前状态: 未完成`);
                 break;
-            case 'list':
+            }
+            case 'list': {
                 const sortByDeadline = args.includes('--sort-by-deadline');
                 const isDesc = args.includes('--desc');
                 const listOptions = sortByDeadline ? { sortBy: 'deadline', order: isDesc ? 'desc' : 'asc' } : {};
-                const todos = todoService.list(listOptions);
-                if (todos.length === 0) {
+                const todoList = todoService.list(listOptions);
+                if (todoList.length === 0) {
                     console.log('暂无待办事项');
                 }
                 else {
                     console.log('待办事项列表:');
-                    todos.forEach(t => {
+                    todoList.forEach(t => {
                         console.log(`\n编号: ${t.id}`);
                         console.log(`内容: '${t.content}'`);
                         console.log(`创建时间: ${(0, dateFormatter_1.formatDate)(t.createdAt)}`);
@@ -148,7 +152,8 @@ async function main() {
                     });
                 }
                 break;
-            case 'complete-batch':
+            }
+            case 'complete-batch': {
                 if (!args || args.length === 0) {
                     throw new Error('请提供待办事项ID');
                 }
@@ -172,7 +177,8 @@ async function main() {
                     console.log(`注意：ID为 [${invalidIds.join(', ')}] 的待办事项不存在，已忽略`);
                 }
                 break;
-            case 'complete-all':
+            }
+            case 'complete-all': {
                 try {
                     const completedTodos = todoService.completeAll();
                     console.log('已完成所有待办事项：\n');
@@ -188,6 +194,56 @@ async function main() {
                     console.log(error.message);
                 }
                 break;
+            }
+            case 'set-deadline': {
+                if (!args[0]) {
+                    throw new Error('请提供待办事项ID');
+                }
+                const todoId = parseInt(args[0], 10);
+                if (isNaN(todoId) || !Number.isInteger(todoId) || todoId <= 0) {
+                    throw new Error('待办事项ID必须为正整数');
+                }
+                if (!args[1]) {
+                    throw new Error('请提供截止日期');
+                }
+                let newDeadline;
+                if (args[1].toLowerCase() === 'none') {
+                    newDeadline = undefined;
+                }
+                else {
+                    const date = validateDate(args[1]);
+                    if (!date) {
+                        throw new Error('无效的日期格式，请使用 YYYY-MM-DD 格式');
+                    }
+                    newDeadline = date;
+                }
+                // 获取待办事项
+                const targetTodo = todoService.list().find(t => t.id === todoId);
+                if (!targetTodo) {
+                    throw new Error('待办事项不存在');
+                }
+                // 验证日期是否是未来日期
+                if (newDeadline) {
+                    const now = new Date();
+                    now.setHours(0, 0, 0, 0);
+                    newDeadline.setHours(0, 0, 0, 0);
+                    if (newDeadline < now) {
+                        throw new Error('截止日期必须是未来的日期');
+                    }
+                }
+                // 更新待办事项
+                const updatedTodo = todoService.update({
+                    ...targetTodo,
+                    deadline: newDeadline
+                });
+                // 输出更新后的待办事项信息
+                console.log('已更新待办事项：\n');
+                console.log(`编号: ${updatedTodo.id}`);
+                console.log(`内容: '${updatedTodo.content}'`);
+                console.log(`截止日期: ${updatedTodo.deadline ? (0, dateFormatter_1.formatDate)(updatedTodo.deadline).split(' ')[0] : '无'}`);
+                console.log(`状态: ${updatedTodo.completed ? '已完成' : '未完成'}`);
+                break;
+            }
             default:
                 console.error('未知的命令');
                 process.exit(1);

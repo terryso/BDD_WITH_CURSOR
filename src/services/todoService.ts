@@ -42,6 +42,7 @@ interface ITodoService {
   reset(id: number): Todo;
   completeBatch(ids: number[]): Todo[];
   completeAll(): Todo[];
+  update(todo: Todo): Todo;
 }
 
 export class TodoService implements ITodoService {
@@ -362,5 +363,16 @@ export class TodoService implements ITodoService {
 
     this.saveToFile();
     return completedTodos;
+  }
+
+  update(todo: Todo): Todo {
+    const index = this.todos.findIndex(t => t.id === todo.id);
+    if (index === -1) {
+      throw new Error('待办事项不存在');
+    }
+
+    this.todos[index] = todo;
+    this.saveToFile();
+    return todo;
   }
 } 

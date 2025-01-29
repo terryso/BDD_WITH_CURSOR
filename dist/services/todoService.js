@@ -277,5 +277,14 @@ class TodoService {
         this.saveToFile();
         return completedTodos;
     }
+    update(todo) {
+        const index = this.todos.findIndex(t => t.id === todo.id);
+        if (index === -1) {
+            throw new Error('待办事项不存在');
+        }
+        this.todos[index] = todo;
+        this.saveToFile();
+        return todo;
+    }
 }
 exports.TodoService = TodoService;
