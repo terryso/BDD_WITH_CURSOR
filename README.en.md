@@ -4,6 +4,20 @@
 
 This project demonstrates how to use Cursor + Cucumber framework for BDD (Behavior Driven Development). By combining Cursor's rule system with Cucumber's BDD framework, we can achieve a standardized and automated development process.
 
+🎥 [Watch Demo Video](https://youtu.be/teiqYP-yW4U?si=_X4T81lLYlVYwF4-)
+
+## Composer Setup
+
+Before starting development, ensure the following settings in Cursor's Composer:
+
+1. Enable Agent Mode:
+   - Select "agent" mode in the bottom-right corner of the Composer input box
+   - This enables more powerful AI assistant capabilities
+
+2. Enable YOLO Mode:
+   - Check "Enable YOLO Mode" in Cursor settings
+   - This allows the AI assistant to directly execute certain safe operations, improving development efficiency
+
 ## Project Setup
 
 1. After creating a new project in Cursor, first set up the project rules:
@@ -19,145 +33,77 @@ mkdir -p .cursor/rules
 
 ## Development Process
 
-### 1. Create User Story
-
-Create a user story file in the `stories/` directory, following the `story-rules.mdc` standard:
-
-```bash
-mkdir -p stories/[module_name]
-touch stories/[module_name]/[feature_name].story.md
+### 1. Story Creation
+In Cursor's Composer, input:
 ```
-
-User Story Template:
-```markdown
-# [Story Title]
-
-## As a
-[User Role]
-
-## I want to
-[Desired Feature]
-
-## So that
-[Business Value]
-
-## Acceptance Criteria
-- [ ] [Criterion 1]
-- [ ] [Criterion 2]
-
-## Additional Information
-- Business Rules:
-  * [Rule 1]
-  * [Rule 2]
-- Technical Requirements:
-  * [Requirement 1]
-  * [Requirement 2]
-
-## Related Files
-- Feature: [path]
-- Implementation: [path]
+I want to add [feature description], please generate a user story
 ```
+Cursor Agent will:
+- Create a user story file in the `stories/` directory based on `story-rules.mdc` template
+- Include complete story structure (As a/I want/So that)
+- Generate initial acceptance criteria
+- Add supplementary information and related files
 
-### 2. Create Feature File
+Wait for user confirmation of story content and acceptance criteria before proceeding.
 
-Create a feature file in the `features/` directory:
+### 2. Feature Creation
+Prerequisite: User story confirmed
 
-```bash
-mkdir -p features/[module_name]
-touch features/[module_name]/[feature_name].feature
+In Composer, input:
 ```
-
-Feature File Template:
-```gherkin
-Feature: [Feature Name]
-  As a [role]
-  I want to [desired feature]
-  So that [business value]
-
-  Scenario: [Scenario 1 Description]
-    Given [precondition]
-    When [action]
-    Then [expected result]
-
-  Scenario: [Scenario 2 Description]
-    Given [precondition]
-    When [action]
-    Then [expected result]
+Based on [user story path], create feature file and first scenario
 ```
+Cursor Agent will:
+- Create corresponding feature file in features directory
+- Create first basic scenario
+- Ensure feature file header includes reference to corresponding user story
 
-### 3. Implement Step Definitions
-
-Create the step definition file:
-
-```bash
-touch features/[module_name]/[feature_name].steps.ts
+### 3. Steps Definition
+In Composer, input:
 ```
-
-Step Definition Template:
-```typescript
-import { Given, When, Then } from '@cucumber/cucumber';
-import { expect } from 'chai';
-
-Given('precondition description', async function () {
-  // Implement precondition
-});
-
-When('action description', async function () {
-  // Implement action
-});
-
-Then('expected result description', async function () {
-  // Verify result
-});
+Please define steps for [scenario name]
 ```
+Cursor Agent will:
+- Create corresponding `.steps.ts` file
+- Write Given-When-Then steps following BDD standards
+- Ensure step definitions are clear and comply with project standards
 
-### 4. Write Unit Tests
-
-Create test file in the `src/` directory:
-
-```bash
-touch src/[module_name]/[file_name].test.ts
+### 4. BDD Implementation
+In Composer, input:
 ```
-
-Test File Template:
-```typescript
-import { describe, it, expect, beforeEach } from 'vitest';
-
-describe('Module Name', () => {
-  beforeEach(() => {
-    // Prepare test environment
-  });
-
-  describe('Feature Name', () => {
-    it('should behave as expected', () => {
-      // Arrange
-      // Act
-      // Assert
-    });
-  });
-});
+Run BDD tests and implement functionality
 ```
+Cursor Agent will:
+- Execute `npm run test:bdd`
+- Analyze test failure reasons
+- Implement necessary functionality
+- Loop execution until BDD tests pass
+- Perform necessary code refactoring
 
-### 5. Implement Feature Code
+### 5. Unit Testing
+Prerequisite: All BDD tests passing
 
-Create implementation file in the `src/` directory:
-
-```bash
-touch src/[module_name]/[file_name].ts
+In Composer, input:
 ```
-
-### 6. Run Tests
-
-```bash
-# Run unit tests
-npm run test:unit
-
-# Run BDD tests
-npm run test:bdd
-
-# Run all tests
-npm test
+Generate unit tests based on [scenario path]
 ```
+Cursor Agent will:
+- Create corresponding `.test.ts` file
+- Write unit tests following TDD standards
+- Execute `npm run test:unit`
+- Refine implementation until unit tests pass
+- Ensure test coverage meets requirements
+
+### 6. Scenario Completion
+Checklist:
+- [ ] User story acceptance criteria met
+- [ ] All BDD tests passing
+- [ ] All unit tests passing
+- [ ] Code properly refactored
+- [ ] Documentation updated
+
+### 7. Next Scenario
+Repeat steps 2-6 until all scenarios are complete
 
 ## Best Practices
 

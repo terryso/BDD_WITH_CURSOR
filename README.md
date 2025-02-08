@@ -4,6 +4,20 @@
 
 本项目展示了如何使用 Cursor + Cucumber 框架进行 BDD（行为驱动开发）。通过结合 Cursor 的规则系统和 Cucumber 的 BDD 框架，我们可以实现一个规范化、自动化的开发流程。
 
+🎥 [观看演示视频](https://youtu.be/teiqYP-yW4U?si=_X4T81lLYlVYwF4-)
+
+## Composer 设置
+
+在开始开发之前，请确保 Cursor 的 Composer 做如下设置：
+
+1. 开启 Agent 模式：
+   - 在 Composer 输入框右下角选择 "agent" 模式
+   - 这将启用更强大的 AI 助手功能
+
+2. 开启 YOLO 模式：
+   - 在 Cursor 设置中勾选 "Enable YOLO Mode"
+   - 这将允许 AI 助手直接执行某些安全的操作，提高开发效率
+
 ## 项目设置
 
 1. 在 Cursor 中创建新项目后，首先设置项目规则：
@@ -19,146 +33,76 @@ mkdir -p .cursor/rules
 
 ## 开发流程
 
-### 1. 创建用户故事（Story）
-
-在 `stories/` 目录下创建用户故事文件，遵循 `story-rules.mdc` 的规范：
-
-```bash
-mkdir -p stories/[模块名]
-touch stories/[模块名]/[功能名].story.md
+### 1. 创建用户故事（Story Creation）
+在 Cursor 的 Composer 中输入：
 ```
-
-用户故事模板：
-```markdown
-# [故事标题]
-
-## 作为（As a）
-[用户角色]
-
-## 我想要（I want）
-[期望实现的功能]
-
-## 以便于（So that）
-[实现的业务价值]
-
-## 验收标准（Acceptance Criteria）
-- [ ] [验收项1]
-- [ ] [验收项2]
-
-## 补充信息
-- 业务规则：
-  * [规则1]
-  * [规则2]
-- 技术要求：
-  * [要求1]
-  * [要求2]
-
-## 关联文件
-- Feature：[路径]
-- 实现文件：[路径]
+我想增加[功能描述]，帮我生成用户故事
 ```
+Cursor Agent 会根据 `story-rules.mdc` 模板在 `stories/` 目录下创建用户故事文件，包含：
+- 完整的故事结构（As a/I want/So that）
+- 初步的验收标准
+- 补充信息和关联文件
 
-### 2. 创建 Feature 文件
+等待用户确认故事内容和验收标准后再进行下一步。
 
-在 `features/` 目录下创建对应的 feature 文件：
+### 2. 创建 Feature 文件（Feature Creation）
+前置条件：用户故事已确认
 
-```bash
-mkdir -p features/[模块名]
-touch features/[模块名]/[功能名].feature
+在 Composer 中输入：
 ```
-
-Feature 文件模板：
-```gherkin
-# language: zh-CN
-功能: [功能名称]
-  作为[角色]
-  我想要[期望实现的功能]
-  以便于[实现的业务价值]
-
-  场景: [场景1描述]
-    假设[前置条件]
-    当[触发动作]
-    那么[预期结果]
-
-  场景: [场景2描述]
-    假设[前置条件]
-    当[触发动作]
-    那么[预期结果]
+根据[用户故事路径]，创建 feature 文件和第一个场景
 ```
+Cursor Agent 会：
+- 在 features 目录下创建对应的 feature 文件
+- 创建第一个基础场景
+- 确保 feature 文件头部包含对应用户故事的引用
 
-### 3. 实现步骤定义
-
-创建对应的步骤定义文件：
-
-```bash
-touch features/[模块名]/[功能名].steps.ts
+### 3. 场景步骤定义（Steps Definition）
+在 Composer 中输入：
 ```
-
-步骤定义模板：
-```typescript
-import { Given, When, Then } from '@cucumber/cucumber';
-import { expect } from 'chai';
-
-Given('前置条件描述', async function () {
-  // 实现前置条件
-});
-
-When('触发动作描述', async function () {
-  // 实现动作
-});
-
-Then('预期结果描述', async function () {
-  // 验证结果
-});
+请为[场景名称]定义步骤
 ```
+Cursor Agent 会：
+- 创建对应的 `.steps.ts` 文件
+- 根据 BDD 规范编写 Given-When-Then 步骤
+- 确保步骤定义清晰且符合项目规范
 
-### 4. 编写单元测试
-
-在 `src/` 目录下创建对应的测试文件：
-
-```bash
-touch src/[模块名]/[文件名].test.ts
+### 4. BDD 测试实现（BDD Implementation）
+在 Composer 中输入：
 ```
-
-测试文件模板：
-```typescript
-import { describe, it, expect, beforeEach } from 'vitest';
-
-describe('模块名称', () => {
-  beforeEach(() => {
-    // 准备测试环境
-  });
-
-  describe('功能名称', () => {
-    it('应该实现预期行为', () => {
-      // Arrange
-      // Act
-      // Assert
-    });
-  });
-});
+运行 BDD 测试并实现功能
 ```
+Cursor Agent 会：
+- 执行 `npm run test:bdd`
+- 分析测试失败原因
+- 实现必要的功能代码
+- 循环执行直到 BDD 测试通过
+- 进行必要的代码重构
 
-### 5. 实现功能代码
+### 5. 单元测试开发（Unit Testing）
+前置条件：BDD 测试全部通过
 
-在 `src/` 目录下创建实现文件：
-
-```bash
-touch src/[模块名]/[文件名].ts
+在 Composer 中输入：
 ```
-
-### 6. 运行测试
-
-```bash
-# 运行单元测试
-npm run test:unit
-
-# 运行 BDD 测试
-npm run test:bdd
-
-# 运行所有测试
-npm test
+根据[场景路径]生成单元测试
 ```
+Cursor Agent 会：
+- 创建对应的 `.test.ts` 文件
+- 编写符合 TDD 规范的单元测试
+- 执行 `npm run test:unit`
+- 完善功能实现直到单元测试通过
+- 确保测试覆盖率满足要求
+
+### 6. 场景完成确认（Scenario Completion）
+确认清单：
+- [ ] 用户故事验收标准已满足
+- [ ] BDD 测试全部通过
+- [ ] 单元测试全部通过
+- [ ] 代码已完成必要重构
+- [ ] 文档已更新
+
+### 7. 下一个场景（Next Scenario）
+重复步骤 2-6 直到所有场景完成
 
 ## 开发最佳实践
 
