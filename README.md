@@ -181,4 +181,8 @@ Cursor Agent 会：
 1. 确保所有测试都是独立的，不依赖于其他测试的执行结果
 2. 定期检查测试覆盖率，确保核心功能都有测试覆盖
 3. 保持文档和代码的同步更新
-4. 遵循项目规则中定义的编码和测试标准 
+4. 遵循项目规则中定义的编码和测试标准
+
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=terryso/BDD_WITH_CURSOR&type=Date)](https://www.star-history.com/#terryso/BDD_WITH_CURSOR&Date)
